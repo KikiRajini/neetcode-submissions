@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Codec {
+
+    
+    public String serialize(TreeNode root) {
+       List<String> res= new ArrayList<>();
+       dfsSerialize(root,res);
+       return String.join(",",res);
+    }
+
+    private void dfsSerialize(TreeNode node, List<String> res) {
+       if(node==null) {res.add("N"); return;}
+       res.add(String.valueOf(node.val));
+       dfsSerialize(node.left,res);
+       dfsSerialize(node.right,res);
+    }
+
+  
+    public TreeNode deserialize(String data) {
+       String[] vals = data.split(",");
+       return dfsDeserialize(vals);
+    }
+    int i = 0;
+    private TreeNode dfsDeserialize(String[] vals) {
+       if(vals[i].equals("N")) {i++; return null;}
+       TreeNode node = new TreeNode(Integer.parseInt(vals[i]));
+       i++;
+       node.left = dfsDeserialize(vals);
+       node.right = dfsDeserialize(vals);
+       return node;
+    }
+}
